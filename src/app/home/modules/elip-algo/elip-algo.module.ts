@@ -45,7 +45,7 @@ export class ElipAlgoModule
     let aux_Y = (yCenter-b_Y) * (yCenter-b_Y);
     let radius = Math.sqrt(aux_X+aux_Y);
     console.log('X: ' + aux_X + ' Y: ' + aux_Y + ' radius: ' + radius);
-    return radius
+    return radius;
   }
 
   circlePlotPoints (p5, xCenter,  yCenter,  x,  y, partX, partY)
@@ -58,5 +58,66 @@ export class ElipAlgoModule
     this.point.paintPoint(p5, xCenter - y, yCenter + x, partX, partY);
     this.point.paintPoint(p5, xCenter + y, yCenter - x, partX, partY);
     this.point.paintPoint(p5, xCenter - y, yCenter - x, partX, partY);
+  }
+
+  ellipseMidpoint(p5, xCenter, yCenter, Rx, Ry, partX, partY)
+  {
+    let Rx2 = Rx*Rx;
+    let Ry2 = Ry*Ry;
+    let twoRx2 = 2*Rx2;
+    let twoRy2 = 2*Ry2;
+    let p;
+    let x = 0;
+    let y = Ry;
+    let px = 0;
+    let py = twoRx2 * y;
+
+    /* Plot the first set of point */
+    this.ellipsePlotPoints(p5, xCenter, yCenter, x, y, partX, partY);
+
+    /* Region 1 */
+    p = (Ry2 - (Rx2 * Ry) + (0.25 * Rx2)) + 0.5;
+
+    while(px <py)
+    {
+      x++;
+      px += twoRy2;
+
+      if(p<0)
+        p += Ry2 + px;
+      else
+      {
+        y--;
+        py -= twoRx2;
+        p += Ry2 + px - py;
+      }
+      this.ellipsePlotPoints(p5, xCenter, yCenter, x, y, partX, partY);
+    }
+
+    /*Region 2 */
+    p = (Ry2*(x+0.5)*(x+0.5)+ Rx2*(y-1)*(y-1) - Rx2*Ry2) + 0.5;
+
+    while(y>0)
+    {
+      y--;
+      py -= twoRx2;
+      if(p>0)
+        p += Rx2 - py;
+      else
+      {
+        x++;
+        px += twoRy2;
+        p += Rx2 - py + px;
+      }
+      this.ellipsePlotPoints(p5, xCenter, yCenter, x, y, partX, partY);
+    }
+  }
+
+  ellipsePlotPoints(p5, xCenter,  yCenter,  x,  y, partX, partY)
+  {
+    this.point.paintPoint(p5, xCenter + x, yCenter + y, partX, partY);
+    this.point.paintPoint(p5, xCenter - x, yCenter + y, partX, partY);
+    this.point.paintPoint(p5, xCenter + x, yCenter - y, partX, partY);
+    this.point.paintPoint(p5, xCenter - x, yCenter - y, partX, partY);
   }
 }

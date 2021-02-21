@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { PointModule } from './modules/point/point.module';
 import { CoordinatesModule } from './modules/coordinates/coordinates.module';
 import { AuxFuntionModule } from './modules/aux-funtion/aux-funtion.module';
+import { ElipAlgoModule } from './modules/elip-algo/elip-algo.module';
 
 import * as p5 from 'p5';
 
@@ -25,6 +26,7 @@ export class HomePage implements OnInit {
   private point = new PointModule();
   private coordin = new CoordinatesModule();
   private aux = new AuxFuntionModule();
+  private ellip = new ElipAlgoModule();
 
   constructor(private el: ElementRef) { }
 
@@ -73,7 +75,7 @@ export class HomePage implements OnInit {
   drawing(p)
   {
     p.fill(this.color.toString());
-    console.log(this.color);
+    
     switch(this.state)
     {
       case 'point':
@@ -83,8 +85,14 @@ export class HomePage implements OnInit {
         this.point.paintPoint(p, coor_X, coor_Y, this.partX, this.partY);
         break;
       }
+      case 'ellipse':
+      {
+        this.numberClick = this.aux.tripleClickPaint(p, this.state, this.numberClick, this.partX, this.partY);
+        break;
+      }
       default:
       {
+        console.log('Estado: ' + this.numberClick);
         this.numberClick = this.aux.doubleClickPaint(p, this.state, this.numberClick, this.partX, this.partY);
         break;
       }
