@@ -15,7 +15,7 @@ export class HomePage implements OnInit {
   curve: any;
   private canvasSizeX = 650;
   private canvasSizeY = 650;
-  private parts = 100;
+  private parts = 20;
   private partX = this.canvasSizeX / this.parts;
   private partY = this.canvasSizeY / this.parts;
   private state = "point";

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CoordinatesModule } from '../coordinates/coordinates.module';
 import { Line } from 'src/app/home/objects/line/line';
 import { LinesAlgoModule } from '../lines-algo/lines-algo.module';
+import { ElipAlgoModule } from '../elip-algo/elip-algo.module';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ export class AuxFuntionModule
   private auxState = '';
   private line = new Line(0,0,0,0);
   private lines = new LinesAlgoModule();
+  private elip = new ElipAlgoModule();
 
   sleep(milliseconds) {
     const date = Date.now();
@@ -83,7 +85,8 @@ export class AuxFuntionModule
         }
         case 'circle':
         {
-          
+          this.elip.circleMidpoint(p, this.line.a_X, this.line.a_Y, b_X, b_Y, partX, partY);
+          break;
         }
       }
     }
