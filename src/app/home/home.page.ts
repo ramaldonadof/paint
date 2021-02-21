@@ -1,8 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { Line } from './objects/line/line';
 import { PointModule } from './modules/point/point.module';
 import { CoordinatesModule } from './modules/coordinates/coordinates.module';
-import { LinesAlgoModule } from './modules/lines-algo/lines-algo.module';
+import { AuxFuntionModule } from './modules/aux-funtion/aux-funtion.module';
 
 import * as p5 from 'p5';
 
@@ -24,9 +23,8 @@ export class HomePage implements OnInit {
   private color = "000000";
 
   private point = new PointModule();
-  private line = new Line(0,0,0,0);
-  private lines = new LinesAlgoModule();
   private coordin = new CoordinatesModule();
+  private aux = new AuxFuntionModule();
 
   constructor(private el: ElementRef) { }
 
@@ -51,22 +49,11 @@ export class HomePage implements OnInit {
     p.stroke(1); // Hacer que el color de trazado sea negro
     p.frameRate(30);
     
-    let i = 0;
-    do
-    {
-      p.line(i,0,i,this.canvasSizeY);
-      i = i + this.partX;
-    }while(i<this.canvasSizeX);
-      
-    i = 0;
-    
-    do
-    {
-      p.line(0,i,this.canvasSizeX,i);
-      i = i + this.partY;
-    }while(i<this.canvasSizeY);
+    this.aux.drawGrill(p, this.canvasSizeX, this.canvasSizeY, this.partX, this.partY);
 
   }
+
+  
 
   draw(p)
   {
@@ -96,67 +83,9 @@ export class HomePage implements OnInit {
         this.point.paintPoint(p, coor_X, coor_Y, this.partX, this.partY);
         break;
       }
-      case 'line':
+      default:
       {
-        let a_X, a_Y, b_X, b_Y;
-      
-        if(this.numberClick == 1)
-        {
-          a_X = this.coordin.mousePosition_to_coordinates(this.partX, p.mouseX);
-          a_Y = this.coordin.mousePosition_to_coordinates(this.partY, p.mouseY); 
-          this.line.a_X = a_X;
-          this.line.a_Y = a_Y;
-          console.log('Soy 1');
-        }
-
-        if(this.numberClick == 2)
-        {
-          b_X = this.coordin.mousePosition_to_coordinates(this.partX, p.mouseX);
-          b_Y = this.coordin.mousePosition_to_coordinates(this.partY, p.mouseY); 
-
-          this.line.b_X = b_X;
-          this.line.b_Y = b_Y;
-
-          this.numberClick = 0;
-          console.log(this.line.a_X + " " + this.line.a_Y + " " + b_X + " " + b_Y);
-          
-          this.lines.DDALine(p, this.line.a_X, this.line.a_Y, b_X, b_Y, this.partX, this.partY);
-        }
-        
-        this.numberClick = this.numberClick + 1;
-        
-        break;
-      }
-      case 'line_Bre':
-      {
-
-        let a_X, a_Y, b_X, b_Y;
-    
-        if(this.numberClick == 1)
-        {
-          a_X = this.coordin.mousePosition_to_coordinates(this.partX, p.mouseX);
-          a_Y = this.coordin.mousePosition_to_coordinates(this.partY, p.mouseY); 
-          this.line.a_X = a_X;
-          this.line.a_Y = a_Y;
-          console.log('Soy 1');
-        }
-
-        if(this.numberClick == 2)
-        {
-          b_X = this.coordin.mousePosition_to_coordinates(this.partX, p.mouseX);
-          b_Y = this.coordin.mousePosition_to_coordinates(this.partY, p.mouseY); 
-
-          this.line.b_X = b_X;
-          this.line.b_Y = b_Y;
-
-          this.numberClick = 0;
-          console.log(this.line.a_X + " " + this.line.a_Y + " " + b_X + " " + b_Y);
-          
-          this.lines.lineBre(p, this.line.a_X, this.line.a_Y, b_X, b_Y, this.partX, this.partY);
-        }
-        
-        this.numberClick = this.numberClick + 1;
-        
+        this.numberClick = this.aux.doubleClickPaint(p, this.state, this.numberClick, this.partX, this.partY);
         break;
       }
     }
@@ -169,27 +98,11 @@ export class HomePage implements OnInit {
 
   keyPressed(p)
   {
-    if(p.DELETE)
+    if(p.D)
     {
       p.background(220);
 
-      p.stroke(1); // Hacer que el color de trazado sea negro
-      p.frameRate(30);
-      
-      let i = 0;
-      do
-      {
-        p.line(i,0,i,this.canvasSizeY);
-        i = i + this.partX;
-      }while(i<this.canvasSizeX);
-        
-      i = 0;
-      
-      do
-      {
-        p.line(0,i,this.canvasSizeX,i);
-        i = i + this.partY;
-      }while(i<this.canvasSizeY);
+      this.aux.drawGrill(p, this.canvasSizeX, this.canvasSizeY, this.partX, this.partY);
     }
   }
 
