@@ -91,14 +91,14 @@ export class HomePage implements OnInit {
     {
       case 'point':
       {
-        var coor_X = this.coordin.mousePosition_to_coordinates(this.partX, p.mouseX);
-        var coor_Y = this.coordin.mousePosition_to_coordinates(this.partY, p.mouseY);
+        let coor_X = this.coordin.mousePosition_to_coordinates(this.partX, p.mouseX);
+        let coor_Y = this.coordin.mousePosition_to_coordinates(this.partY, p.mouseY);
         this.point.paintPoint(p, coor_X, coor_Y, this.partX, this.partY);
         break;
       }
       case 'line':
       {
-        var a_X, a_Y, b_X, b_Y;
+        let a_X, a_Y, b_X, b_Y;
       
         if(this.numberClick == 1)
         {
@@ -130,7 +130,7 @@ export class HomePage implements OnInit {
       case 'line_Bre':
       {
 
-        var a_X, a_Y, b_X, b_Y;
+        let a_X, a_Y, b_X, b_Y;
     
         if(this.numberClick == 1)
         {
@@ -194,8 +194,8 @@ export class HomePage implements OnInit {
   }
 
   startup() {
-    var muestrario;
-    var colorPredeterminado = "#0000ff";
+    let muestrario;
+    let colorPredeterminado = "#0000ff";
 
     muestrario = document.querySelector("#muestrario");
     muestrario.value = colorPredeterminado;
@@ -205,7 +205,7 @@ export class HomePage implements OnInit {
   }
 
   actualizarPrimero(event) {
-    var p = document.querySelector("p");
+    let p = document.querySelector("p");
   
     if (p) {
       p.style.color = event.target.value;
@@ -218,13 +218,5 @@ export class HomePage implements OnInit {
       p.style.color = event.target.value;
       this.color = p.style.color;
     });
-  }
-
-  sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
   }
 }

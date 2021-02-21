@@ -15,9 +15,9 @@ export class LinesAlgoModule
 
   DDALine(p, sx, sy, ex, ey, partX, partY)
   {
-    var dx = ex - sx;
-    var dy = ey - sy;
-    var steps;
+    let dx = ex - sx;
+    let dy = ey - sy;
+    let steps;
     if(Math.abs(dx) > Math.abs(dy))
     {
         steps = Math.abs(dx);
@@ -27,13 +27,13 @@ export class LinesAlgoModule
       steps = Math.abs(dy);
     }
 
-    var xinc = dx / parseFloat(steps);
-    var yinc = dy / parseFloat(steps);
+    let xinc = dx / parseFloat(steps);
+    let yinc = dy / parseFloat(steps);
 
-    var x = sx;
-    var y = sy;
+    let x = sx;
+    let y = sy;
 
-    for (var i = 0; i <= steps; i++)
+    for (let i = 0; i <= steps; i++)
     {
       this.point.paintPoint(p, Math.round(x),Math.round(y), partX, partY);
       x += xinc;
@@ -43,18 +43,18 @@ export class LinesAlgoModule
 
   lineBre(p, x0, y0, x1, y1, partX, partY)
   { 
-    var dx = Math.abs(x1-x0); 
-    var dy = Math.abs(y1-y0); 
-    var sx = (x0 < x1) ? 1 : -1; 
-    var sy = (y0 < y1) ? 1 : -1; 
-    var err = dx-dy; 
+    let dx = Math.abs(x1-x0); 
+    let dy = Math.abs(y1-y0); 
+    let sx = (x0 < x1) ? 1 : -1; 
+    let sy = (y0 < y1) ? 1 : -1; 
+    let err = dx-dy; 
 
     while(true)
     { 
       this.point.paintPoint(p, x0, y0, partX, partY);
 
       if ((x0==x1) && (y0==y1)) break; 
-      var e2 = 2*err; 
+      let e2 = 2*err; 
       if (e2 >-dy)
       {
         err -= dy; x0 += sx; 

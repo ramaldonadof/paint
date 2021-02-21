@@ -13,9 +13,9 @@ export class CoordinatesModule
 {
   mousePosition_to_coordinates(_part, pos)
     {
-        var coor;
+        let coor;
 
-        for(var i = 0; i*_part<= pos;i++)
+        for(let i = 0; i*_part<= pos;i++)
         {
         coor = i;
         }
