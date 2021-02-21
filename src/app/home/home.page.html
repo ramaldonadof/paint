@@ -6,4 +6,11 @@
 
 <ion-content>
   <div id="canvasContainer" class="canvas-container"></div>
+  <div>
+    <ion-button id="b_point" (click)="modeChange('point')">Point</ion-button>
+    <ion-button id="b_line" (click)="modeChange('line')">Line</ion-button>
+    <ion-button id="b_lineB" (click)="modeChange('line_Bre')">Line Bresenham</ion-button>
+    <ion-button id="b_circle" (click)="modeChange('circle')">Circle</ion-button>
+    <input type="color" value="#ff0000" id="muestrario">
+  </div>
 </ion-content>
