@@ -25,3 +25,19 @@
 #container a {
   text-decoration: none;
 }
+
+div.container-C
+{
+  overflow: auto;
+  height: auto;
+  width: auto;
+}
+
+div.canvas-container
+{
+  height: auto;
+  width: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+  align-items: center;
+}

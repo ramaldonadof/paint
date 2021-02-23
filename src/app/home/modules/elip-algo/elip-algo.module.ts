@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PointModule } from '../point/point.module';
-
+import { AuxCoorModule } from '../aux-coor/aux-coor.module';
 
 
 @NgModule({
@@ -13,18 +13,21 @@ import { PointModule } from '../point/point.module';
 export class ElipAlgoModule
 {
   private point = new PointModule();
+  private aux_coor = new AuxCoorModule();
 
-  circleMidpoint (p5, xCenter, yCenter, b_X, b_Y, partX, partY)
+  circleMidpoint (p5, xCenter, yCenter, b_X, b_Y, partX, partY, color)
   {
-    console.log('Circulito');
+    let aux;
+    let object = [];
+    
     let radius = Math.round(this.radius( xCenter, yCenter, b_X, b_Y));
     let x = 0;
     let y = radius;
     let p = 1 - radius;
 
     /' Plot first set of points '/
-    this.circlePlotPoints (p5, xCenter, yCenter, x, y, partX, partY);
-
+    aux = this.circlePlotPoints (p5, xCenter, yCenter, x, y, partX, partY, color);
+    object = this.aux_coor.existEl(object, aux);
     while (x < y) 
     {
       x++;
@@ -35,8 +38,10 @@ export class ElipAlgoModule
         y--;
         p += 2 * (x - y) + 1;
       }
-      this.circlePlotPoints (p5, xCenter, yCenter, x, y, partX, partY);
+      aux = this.circlePlotPoints (p5, xCenter, yCenter, x, y, partX, partY, color);
+      object = this.aux_coor.existEl(object, aux);
     }
+    return object;
   }
 
   radius( xCenter, yCenter, b_X, b_Y)
@@ -48,20 +53,25 @@ export class ElipAlgoModule
     return radius;
   }
 
-  circlePlotPoints (p5, xCenter,  yCenter,  x,  y, partX, partY)
+  circlePlotPoints (p5, xCenter,  yCenter,  x,  y, partX, partY, color)
   {
-    this.point.paintPoint(p5, xCenter + x, yCenter + y, partX, partY);
-    this.point.paintPoint(p5, xCenter - x, yCenter + y, partX, partY);
-    this.point.paintPoint(p5, xCenter + x, yCenter - y, partX, partY);
-    this.point.paintPoint(p5, xCenter - x, yCenter - y, partX, partY);
-    this.point.paintPoint(p5, xCenter + y, yCenter + x, partX, partY);
-    this.point.paintPoint(p5, xCenter - y, yCenter + x, partX, partY);
-    this.point.paintPoint(p5, xCenter + y, yCenter - x, partX, partY);
-    this.point.paintPoint(p5, xCenter - y, yCenter - x, partX, partY);
+    let object = [];
+    object.push(this.point.paintPoint(p5, xCenter + x, yCenter + y, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter - x, yCenter + y, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter + x, yCenter - y, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter - x, yCenter - y, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter + y, yCenter + x, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter - y, yCenter + x, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter + y, yCenter - x, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter - y, yCenter - x, partX, partY, color));
+    return object;
   }
 
-  ellipseMidpoint(p5, xCenter, yCenter, Rx, Ry, partX, partY)
+  ellipseMidpoint(p5, xCenter, yCenter, Rx, Ry, partX, partY, color)
   {
+    let aux;
+    let object = [];
+
     let Rx2 = Rx*Rx;
     let Ry2 = Ry*Ry;
     let twoRx2 = 2*Rx2;
@@ -73,7 +83,8 @@ export class ElipAlgoModule
     let py = twoRx2 * y;
 
     /* Plot the first set of point */
-    this.ellipsePlotPoints(p5, xCenter, yCenter, x, y, partX, partY);
+    aux = this.ellipsePlotPoints(p5, xCenter, yCenter, x, y, partX, partY, color);
+    object = this.aux_coor.existEl(object, aux);
 
     /* Region 1 */
     p = (Ry2 - (Rx2 * Ry) + (0.25 * Rx2)) + 0.5;
@@ -91,7 +102,8 @@ export class ElipAlgoModule
         py -= twoRx2;
         p += Ry2 + px - py;
       }
-      this.ellipsePlotPoints(p5, xCenter, yCenter, x, y, partX, partY);
+      aux = this.ellipsePlotPoints(p5, xCenter, yCenter, x, y, partX, partY, color);
+      object = this.aux_coor.existEl(object, aux);
     }
 
     /*Region 2 */
@@ -109,15 +121,19 @@ export class ElipAlgoModule
         px += twoRy2;
         p += Rx2 - py + px;
       }
-      this.ellipsePlotPoints(p5, xCenter, yCenter, x, y, partX, partY);
+      aux = this.ellipsePlotPoints(p5, xCenter, yCenter, x, y, partX, partY, color);
+      object = this.aux_coor.existEl(object, aux);
     }
+    return object;
   }
 
-  ellipsePlotPoints(p5, xCenter,  yCenter,  x,  y, partX, partY)
-  {
-    this.point.paintPoint(p5, xCenter + x, yCenter + y, partX, partY);
-    this.point.paintPoint(p5, xCenter - x, yCenter + y, partX, partY);
-    this.point.paintPoint(p5, xCenter + x, yCenter - y, partX, partY);
-    this.point.paintPoint(p5, xCenter - x, yCenter - y, partX, partY);
+  ellipsePlotPoints(p5, xCenter,  yCenter,  x,  y, partX, partY, color)
+  {    
+    let object = [];
+    object.push(this.point.paintPoint(p5, xCenter + x, yCenter + y, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter - x, yCenter + y, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter + x, yCenter - y, partX, partY, color));
+    object.push(this.point.paintPoint(p5, xCenter - x, yCenter - y, partX, partY, color));
+    return object;
   }
 }

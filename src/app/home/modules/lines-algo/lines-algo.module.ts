@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PointModule } from '../point/point.module';
-
+import { AuxCoorModule } from '../aux-coor/aux-coor.module';
 
 @NgModule({
   declarations: [],
@@ -12,9 +12,11 @@ import { PointModule } from '../point/point.module';
 export class LinesAlgoModule
 {
   point = new PointModule();
+  aux_coor = new AuxCoorModule();
 
-  DDALine(p, sx, sy, ex, ey, partX, partY)
+  DDALine(p, sx, sy, ex, ey, partX, partY, color)
   {
+    let object = [];
     let dx = ex - sx;
     let dy = ey - sy;
     let steps;
@@ -35,14 +37,17 @@ export class LinesAlgoModule
 
     for (let i = 0; i <= steps; i++)
     {
-      this.point.paintPoint(p, Math.round(x),Math.round(y), partX, partY);
+      let aux = this.point.paintPoint(p, Math.round(x),Math.round(y), partX, partY, color);
+      object = this.aux_coor.exist(object, aux);
       x += xinc;
       y += yinc;
     }
+    return object;
   }
 
-  lineBre(p, x0, y0, x1, y1, partX, partY)
+  lineBre(p, x0, y0, x1, y1, partX, partY, color)
   { 
+    let object = [];
     let dx = Math.abs(x1-x0); 
     let dy = Math.abs(y1-y0); 
     let sx = (x0 < x1) ? 1 : -1; 
@@ -51,7 +56,8 @@ export class LinesAlgoModule
 
     while(true)
     { 
-      this.point.paintPoint(p, x0, y0, partX, partY);
+      let aux = this.point.paintPoint(p, x0, y0, partX, partY, color);
+      object = this.aux_coor.exist(object, aux);
 
       if ((x0==x1) && (y0==y1)) break; 
       let e2 = 2*err; 
@@ -64,5 +70,6 @@ export class LinesAlgoModule
         err += dx; y0 += sy; 
       } 
     } 
+    return object;
   }
 }

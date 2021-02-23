@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { PointModule } from './modules/point/point.module';
 import { CoordinatesModule } from './modules/coordinates/coordinates.module';
 import { AuxFuntionModule } from './modules/aux-funtion/aux-funtion.module';
-import { ElipAlgoModule } from './modules/elip-algo/elip-algo.module';
+import { AuxCoorModule } from './modules/aux-coor/aux-coor.module';
 
 import * as p5 from 'p5';
 
@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
   curve: any;
   private canvasSizeX = 650;
   private canvasSizeY = 650;
-  private parts = 20;
+  private parts = 100;
   private partX = this.canvasSizeX / this.parts;
   private partY = this.canvasSizeY / this.parts;
   private state = "point";
@@ -26,7 +26,8 @@ export class HomePage implements OnInit {
   private point = new PointModule();
   private coordin = new CoordinatesModule();
   private aux = new AuxFuntionModule();
-  private ellip = new ElipAlgoModule();
+  private aux_coor = new AuxCoorModule();
+  painted = [];
 
   constructor(private el: ElementRef) { }
 
@@ -37,6 +38,7 @@ export class HomePage implements OnInit {
       p.draw = () => { this.draw(p); };
       p.mouseClicked = () => { this.mouseClicked(p); };
       p.keyPressed = () => {this.keyPressed(p); };
+      p.keyTyped = () => {this.keyTyped(p); };
     }, this.el.nativeElement);
   }
 
@@ -48,7 +50,7 @@ export class HomePage implements OnInit {
       .parent(c);
     p.background(220);
 
-    p.stroke(1); // Hacer que el color de trazado sea negro
+    p.stroke(150); // Hacer que el color de trazado sea negro
     p.frameRate(30);
     
     this.aux.drawGrill(p, this.canvasSizeX, this.canvasSizeY, this.partX, this.partY);
@@ -74,29 +76,37 @@ export class HomePage implements OnInit {
   
   drawing(p)
   {
-    p.fill(this.color.toString());
+    this.color = this.aux.actual_Color();
+    //p.fill(this.color);
     
     switch(this.state)
     {
       case 'point':
       {
+        let aux;
         let coor_X = this.coordin.mousePosition_to_coordinates(this.partX, p.mouseX);
         let coor_Y = this.coordin.mousePosition_to_coordinates(this.partY, p.mouseY);
-        this.point.paintPoint(p, coor_X, coor_Y, this.partX, this.partY);
+
+        aux = this.point.paintPoint(p, coor_X, coor_Y, this.partX, this.partY, this.color);
+        this.painted = this.aux_coor.exist(this.painted,aux);
         break;
       }
       case 'ellipse':
       {
-        this.numberClick = this.aux.tripleClickPaint(p, this.state, this.numberClick, this.partX, this.partY);
+        let aux;
+        [this.numberClick, aux] = this.aux.tripleClickPaint(p, this.state, this.numberClick, this.partX, this.partY, this.color);
+        this.painted = this.aux_coor.existEl(this.painted,aux);
         break;
       }
       default:
       {
-        console.log('Estado: ' + this.numberClick);
-        this.numberClick = this.aux.doubleClickPaint(p, this.state, this.numberClick, this.partX, this.partY);
+        let aux;
+        [this.numberClick, aux] = this.aux.doubleClickPaint(p, this.state, this.numberClick, this.partX, this.partY, this.color);
+        this.painted = this.aux_coor.existEl(this.painted,aux);
         break;
       }
     }
+    console.log(this.painted);
   }
 
   modeChange(mode)
@@ -106,12 +116,37 @@ export class HomePage implements OnInit {
 
   keyPressed(p)
   {
-    if(p.D)
+
+    if(p.keyCode == p.DELETE)
     {
       p.background(220);
 
       this.aux.drawGrill(p, this.canvasSizeX, this.canvasSizeY, this.partX, this.partY);
     }
+  }
+
+  keyTyped(p)
+  {
+    let width, height;
+    if(p.key == '+')
+    {
+      console.log('+');
+      width = this.canvasSizeX + 1000;
+      height = this.canvasSizeY + 1000;
+    }
+    if(p.key == '-')
+    {
+      width = this.canvasSizeX - 1000;
+      height = this.canvasSizeY - 1000;
+    }
+
+    this.canvasSizeX = width;
+    this.canvasSizeY = height;
+    this.partX = height/this.parts;
+    this.partY = width/this.parts;
+    p.resizeCanvas(this.canvasSizeX, this.canvasSizeY);
+    this.aux.drawGrill(p, height, width, this.partX, this.partY);
+    this.aux_coor.redrawin_Size(p, this.painted, this.partX, this.partY);
   }
 
   startup() {

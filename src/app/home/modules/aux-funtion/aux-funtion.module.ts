@@ -5,7 +5,7 @@ import { Line } from 'src/app/home/objects/line/line';
 import { Ellipse } from 'src/app/home/objects/ellipse/ellipse';
 import { LinesAlgoModule } from '../lines-algo/lines-algo.module';
 import { ElipAlgoModule } from '../elip-algo/elip-algo.module';
-
+import { AuxCoorModule } from '../aux-coor/aux-coor.module';
 
 @NgModule({
   declarations: [],
@@ -22,6 +22,7 @@ export class AuxFuntionModule
   private ellipse = new Ellipse(0,0,0,0,0,0);
   private lines = new LinesAlgoModule();
   private elip = new ElipAlgoModule();
+  private aux_coor = new AuxCoorModule();
 
   sleep(milliseconds) {
     const date = Date.now();
@@ -34,6 +35,8 @@ export class AuxFuntionModule
   drawGrill(p, canvasSizeX, canvasSizeY, partX, partY)
   {
     let i = 0;
+    p.background(220);
+    p.fill(1);
     do
     {
       p.line(i,0,i,canvasSizeY);
@@ -49,9 +52,10 @@ export class AuxFuntionModule
     }while(i<canvasSizeY);
   }
 
-  doubleClickPaint(p, state, numberClick, partX, partY)
+  doubleClickPaint(p, state, numberClick, partX, partY, color)
   {
     let a_X, a_Y, b_X, b_Y;
+    let object = [];
 
     switch(numberClick)
     {
@@ -81,17 +85,20 @@ export class AuxFuntionModule
           {
             case'line':
             {
-              this.lines.DDALine(p, this.line.a_X, this.line.a_Y, b_X, b_Y, partX, partY);
+              let aux = this.lines.DDALine(p, this.line.a_X, this.line.a_Y, b_X, b_Y, partX, partY, color);
+              object = this.aux_coor.existEl(object, aux);
               break;
             }
             case'line_Bre':
             {
-              this.lines.lineBre(p, this.line.a_X, this.line.a_Y, b_X, b_Y, partX, partY);
+              let aux = this.lines.lineBre(p, this.line.a_X, this.line.a_Y, b_X, b_Y, partX, partY, color);
+              object = this.aux_coor.existEl(object, aux);
               break;
             }
             case 'circle':
             {
-              this.elip.circleMidpoint(p, this.line.a_X, this.line.a_Y, b_X, b_Y, partX, partY);
+              let aux = this.elip.circleMidpoint(p, this.line.a_X, this.line.a_Y, b_X, b_Y, partX, partY, color);
+              object = this.aux_coor.existEl(object, aux);
               break;
             }
           }
@@ -109,12 +116,13 @@ export class AuxFuntionModule
       }
     }
     numberClick = numberClick + 1;
-    return numberClick;
+    return [numberClick, object];
   }
 
-  tripleClickPaint(p, state, numberClick, partX, partY)
+  tripleClickPaint(p, state, numberClick, partX, partY, color)
   {
     let a_X, a_Y, b_X, b_Y, c_X, c_Y, d_a, d_b;
+    let object = [];
 
     switch(numberClick)
     {
@@ -170,7 +178,8 @@ export class AuxFuntionModule
           console.log('Soy 3');
           d_a = this.elip.radius(this.ellipse.a_X, this.ellipse.a_Y, this.ellipse.b_X, this.ellipse.b_Y);
           d_b = this.elip.radius(this.ellipse.a_X, this.ellipse.a_Y, c_X, c_Y);
-          this.elip.ellipseMidpoint(p, this.ellipse.a_X, this.ellipse.a_Y, Math.round(d_a), Math.round(d_b), partX, partY);
+          let aux = this.elip.ellipseMidpoint(p, this.ellipse.a_X, this.ellipse.a_Y, Math.round(d_a), Math.round(d_b), partX, partY, color);
+          object = this.aux_coor.existEl(object, aux);
         }
         else
         {
@@ -188,6 +197,16 @@ export class AuxFuntionModule
     }
     numberClick += 1;
     console.log(numberClick);
-    return numberClick;
+    return [numberClick, object];
+  }
+
+  actual_Color()
+  {
+    let muestrario;
+
+    muestrario = document.querySelector("#muestrario");
+    console.log(muestrario.value.toString());
+
+    return muestrario.value;
   }
 }

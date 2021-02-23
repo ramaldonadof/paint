@@ -5,13 +5,19 @@
 </ion-header>
 
 <ion-content>
+
+  <div class="container-C">
+  
+  </div>
+  
   <div id="canvasContainer" class="canvas-container"></div>
+
   <div>
-    <ion-button id="b_point" (click)="modeChange('point')">Point</ion-button>
-    <ion-button id="b_line" (click)="modeChange('line')">Line</ion-button>
-    <ion-button id="b_lineB" (click)="modeChange('line_Bre')">Line Bresenham</ion-button>
-    <ion-button id="b_circle" (click)="modeChange('circle')">Circle</ion-button>
-    <ion-button id="b_ellipse" (click)="modeChange('ellipse')">Ellipse</ion-button>
-    <input type="color" value="#ff0000" id="muestrario">
+    <ion-icon id="b_point" name="brush-outline" (click)="modeChange('point')"></ion-icon>
+    <ion-icon id="b_line" name="resize-outline" (click)="modeChange('line')">Line</ion-icon>
+    <ion-icon id="b_lineB" name="remove-outline" (click)="modeChange('line_Bre')">Line Bresenham</ion-icon>
+    <ion-icon id="b_circle" name="ellipse-outline" (click)="modeChange('circle')">Circle</ion-icon>
+    <ion-icon id="b_ellipse" name="ellipsis-horizontal-circle-outline" (click)="modeChange('ellipse')">Ellipse</ion-icon>
+    <input type="color" value="#000000" id="muestrario">
   </div>
 </ion-content>
