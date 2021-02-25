@@ -3,6 +3,7 @@ import { PointModule } from './modules/point/point.module';
 import { CoordinatesModule } from './modules/coordinates/coordinates.module';
 import { AuxFuntionModule } from './modules/aux-funtion/aux-funtion.module';
 import { AuxCoorModule } from './modules/aux-coor/aux-coor.module';
+import { PaintModule } from './modules/paint/paint.module';
 
 import * as p5 from 'p5';
 
@@ -98,6 +99,18 @@ export class HomePage implements OnInit {
         this.painted = this.aux_coor.existEl(this.painted,aux);
         break;
       }
+      case 'paint':
+      {
+        let paint = new PaintModule();
+        let coor_X = this.coordin.mousePosition_to_coordinates(this.partX, p.mouseX);
+        let coor_Y = this.coordin.mousePosition_to_coordinates(this.partY, p.mouseY);
+        let color_O = paint.actualcolor(this.painted, coor_X, coor_Y)
+        console.log(this.painted);
+        console.log(color_O);
+        let aux = paint.floodFill4(p, coor_X, coor_Y, this.partX, this.partY, this.painted, color_O, this.color, this.parts);
+        this.painted = this.aux_coor.existEl(this.painted, aux);
+        break;
+      }
       default:
       {
         let aux;
@@ -122,6 +135,7 @@ export class HomePage implements OnInit {
       p.background(220);
 
       this.aux.drawGrill(p, this.canvasSizeX, this.canvasSizeY, this.partX, this.partY);
+      this.painted = [];
     }
   }
 
@@ -130,7 +144,6 @@ export class HomePage implements OnInit {
     let width, height;
     if(p.key == '+')
     {
-      console.log('+');
       width = this.canvasSizeX + 1000;
       height = this.canvasSizeY + 1000;
     }

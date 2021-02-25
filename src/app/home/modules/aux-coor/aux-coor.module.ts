@@ -19,7 +19,6 @@ export class AuxCoorModule
     {
       if(object[i].x == element.x && object[i].y == element.y && object[i].color_A == element.color_A)
       {
-        console.log('Existe')
         a = false;
       }
       if(object[i].x == element.x && object[i].y == element.y && object[i].color_A != element.color_A)
@@ -46,7 +45,6 @@ export class AuxCoorModule
       {
         if(object1[i].x == object2[j].x && object1[i].y == object2[j].y && object1[i].color_A == object2[j].color_A)
         {
-          console.log('Existe')
           a = false;
         }
         if(object1[i].x == object2[j].x && object1[i].y == object2[j].y && object1[i].color_A != object2[j].color_A)

@@ -49,7 +49,6 @@ export class ElipAlgoModule
     let aux_X = (xCenter-b_X) * (xCenter-b_X);
     let aux_Y = (yCenter-b_Y) * (yCenter-b_Y);
     let radius = Math.sqrt(aux_X+aux_Y);
-    console.log('X: ' + aux_X + ' Y: ' + aux_Y + ' radius: ' + radius);
     return radius;
   }
 

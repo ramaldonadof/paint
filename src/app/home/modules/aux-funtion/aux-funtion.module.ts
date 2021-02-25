@@ -35,7 +35,7 @@ export class AuxFuntionModule
   drawGrill(p, canvasSizeX, canvasSizeY, partX, partY)
   {
     let i = 0;
-    p.background(220);
+    p.background('FFFFFF');
     p.fill(1);
     do
     {
@@ -66,7 +66,6 @@ export class AuxFuntionModule
         a_Y = this.coordin.mousePosition_to_coordinates(partY, p.mouseY); 
         this.line.a_X = a_X;
         this.line.a_Y = a_Y;
-        console.log('Soy 1');
         break;
       }
       case 2:
@@ -80,7 +79,6 @@ export class AuxFuntionModule
           this.line.b_Y = b_Y;
 
           numberClick = 0;
-          console.log(this.line.a_X + " " + this.line.a_Y + " " + b_X + " " + b_Y);
           switch(state)
           {
             case'line':
@@ -105,7 +103,6 @@ export class AuxFuntionModule
         }
         else if(this.auxState != state)
         {
-          console.log(this.auxState + ' : ' + state);
           this.line.a_X = 0;
           this.line.a_Y = 0;
           this.line.b_X = 0;
@@ -134,12 +131,10 @@ export class AuxFuntionModule
 
         this.ellipse.a_X = a_X;
         this.ellipse.a_Y = a_Y;
-        console.log('Soy elipse 1');
         break;
       }
       case 2:
       {
-        console.log('Soy elipse 2');
         if(this.auxState == state)
         {
           this.auxState = state;
@@ -148,11 +143,9 @@ export class AuxFuntionModule
 
           this.ellipse.b_X = b_X;
           this.ellipse.b_Y = b_Y;
-          console.log('Soy 2');
         }
         else
         {
-          console.log(this.auxState + ' : ' + state);
           this.ellipse.a_X = 0;
           this.ellipse.a_Y = 0;
           this.ellipse.b_X = 0;
@@ -165,7 +158,6 @@ export class AuxFuntionModule
       }
       case 3:
       {
-        console.log('Soy elipse 3');
         if(this.auxState == state)
         {
           c_X = this.coordin.mousePosition_to_coordinates(partX, p.mouseX);
@@ -175,7 +167,6 @@ export class AuxFuntionModule
           this.ellipse.c_Y = c_Y;
 
           numberClick = 0;
-          console.log('Soy 3');
           d_a = this.elip.radius(this.ellipse.a_X, this.ellipse.a_Y, this.ellipse.b_X, this.ellipse.b_Y);
           d_b = this.elip.radius(this.ellipse.a_X, this.ellipse.a_Y, c_X, c_Y);
           let aux = this.elip.ellipseMidpoint(p, this.ellipse.a_X, this.ellipse.a_Y, Math.round(d_a), Math.round(d_b), partX, partY, color);
@@ -183,7 +174,6 @@ export class AuxFuntionModule
         }
         else
         {
-          console.log(this.auxState + ' : ' + state);
           this.ellipse.a_X = 0;
           this.ellipse.a_Y = 0;
           this.ellipse.b_X = 0;
@@ -196,7 +186,6 @@ export class AuxFuntionModule
       }
     }
     numberClick += 1;
-    console.log(numberClick);
     return [numberClick, object];
   }
 
@@ -205,7 +194,6 @@ export class AuxFuntionModule
     let muestrario;
 
     muestrario = document.querySelector("#muestrario");
-    console.log(muestrario.value.toString());
 
     return muestrario.value;
   }
