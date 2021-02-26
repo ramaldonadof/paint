@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
     p.stroke(150); // Hacer que el color de trazado sea negro
     p.frameRate(30);
     
-    this.aux.drawGrill(p, this.canvasSizeX, this.canvasSizeY, this.partX, this.partY);
+    this.aux.drawGrill(p, this.canvasSizeX, this.canvasSizeY, this.partX, this.partY, 'FFFFFF');
 
   }
 
@@ -107,7 +107,7 @@ export class HomePage implements OnInit {
         let color_O = paint.actualcolor(this.painted, coor_X, coor_Y)
         console.log(this.painted);
         console.log(color_O);
-        let aux = paint.floodFill4(p, coor_X, coor_Y, this.partX, this.partY, this.painted, color_O, this.color, this.parts);
+        let aux = paint.floodFill4(p, coor_X, coor_Y, this.partX, this.partY, this.painted, color_O, this.color, this.parts, this.canvasSizeX, this.canvasSizeY);
         this.painted = this.aux_coor.existEl(this.painted, aux);
         break;
       }
@@ -134,7 +134,7 @@ export class HomePage implements OnInit {
     {
       p.background(220);
 
-      this.aux.drawGrill(p, this.canvasSizeX, this.canvasSizeY, this.partX, this.partY);
+      this.aux.drawGrill(p, this.canvasSizeX, this.canvasSizeY, this.partX, this.partY, 'FFFFFF');
       this.painted = [];
     }
   }
@@ -158,7 +158,7 @@ export class HomePage implements OnInit {
     this.partX = height/this.parts;
     this.partY = width/this.parts;
     p.resizeCanvas(this.canvasSizeX, this.canvasSizeY);
-    this.aux.drawGrill(p, height, width, this.partX, this.partY);
+    this.aux.drawGrill(p, height, width, this.partX, this.partY, 'FFFFFF');
     this.aux_coor.redrawin_Size(p, this.painted, this.partX, this.partY);
   }
 

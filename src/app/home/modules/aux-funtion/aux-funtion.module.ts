@@ -32,10 +32,10 @@ export class AuxFuntionModule
     } while (currentDate - date < milliseconds);
   }
 
-  drawGrill(p, canvasSizeX, canvasSizeY, partX, partY)
+  drawGrill(p, canvasSizeX, canvasSizeY, partX, partY, color_back)
   {
     let i = 0;
-    p.background('FFFFFF');
+    p.background(color_back);
     p.fill(1);
     do
     {
